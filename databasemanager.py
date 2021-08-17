@@ -60,6 +60,11 @@ def create_whitehack_character():
                 stat_con INTEGER NOT NULL,
                 stat_int INTEGER NOT NULL,
                 stat_wis INTEGER NOT NULL,
+                str_group VARCHAR(255),
+                dex_group VARCHAR(255),
+                con_group VARCHAR(255),
+                int_group VARCHAR(255),
+                wis_group VARCHAR(255),
                 ST INTEGER NOT NULL,
                 HP INTEGER NOT NULL,
                 AC INTEGER NOT NULL,
@@ -67,7 +72,7 @@ def create_whitehack_character():
                 AV INTEGER NOT NULL
             );
 
-            INSERT INTO whitehack_character VALUES (DEFAULT, 1, 'Terra', 'Strong', 'Black Librarians', NULL, NULL, NULL, NULL, 6, 15, 14, 9, 13, 6, 6, 1, 30, 30);
+            INSERT INTO whitehack_character VALUES (DEFAULT, 1, 'Terra', 'Strong', 'Black Librarians', NULL, NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
         """
     )
 
@@ -202,7 +207,9 @@ def fetch_whitehack_character():
 
     whitehack_character = {}
     for i in rows:
-        whitehack_character[i[0]] = {'char_id' : i[0], 'user_id' : i[1], 'name' : i[2], 'archetype' : i[3], 'group' : i[4], 'group2' : i[5], 'group3' : i[6], 'group4' : i[7], 'group5' : i[8], 'stat_str' : i[9], 'stat_dex' : i[10], 'stat_con' : i[11], 'stat_int' : i[12], 'stat_wis' : i[13], 'ST' : i[14], 'HP' : i[15], 'AC' : i[16], 'MV' : i[17], 'AV' : i[18]}
+        whitehack_character[i[0]] = {'char_id': i[0], 'user_id': i[1], 'name': i[2], 'archetype': i[3], 'group1': i[4], 'group2': i[5],
+                                     'group3': i[6], 'group4': i[7], 'group5': i[8], 'stat_str': i[9], 'stat_dex': i[10], 'stat_con': i[11], 'stat_int': i[12], 'stat_wis': i[13], 'str_group': i[14], 'dex_group': i[15],
+                                     'con_group': i[16], 'int_group': i[17], 'wis_group': i[18], 'ST': i[19], 'HP': i[20], 'AC': i[21], 'MV': i[22], 'AV': i[23]}
     return whitehack_character
 
 if __name__ == '__main__':
