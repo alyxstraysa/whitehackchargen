@@ -4,10 +4,10 @@ import os
 ON_HEROKU = 'ON_HEROKU' in os.environ
 
 if ON_HEROKU:
-    USER = os.environ.get('DB_USERNAME')
-    PASSWORD = os.environ.get('DB_PASSWORD')
-    DATABASE = os.environ.get("DB")
-    DATABASE_URL = os.environ.get('DB_HOST')
+    DB_USERNAME = os.environ.get('DB_USERNAME')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD')
+    DB = os.environ.get("DB")
+    DB_HOST = os.environ.get('DB_HOST')
 else:
     from secrets import *
 
