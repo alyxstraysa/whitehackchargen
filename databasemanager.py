@@ -48,7 +48,6 @@ def fetch_character_discord():
     for i in rows:
         users[i[0]] = {'name' : i[1], 'discord_id' : i[2], 'discord_name' : i[3]}
 
-    print(users)
     return users
 
 if __name__ == '__main__':
