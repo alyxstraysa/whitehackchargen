@@ -25,11 +25,7 @@ class HelloWorld(Resource):
 
 class WhiteHackCharacter(Resource):
     def get(self):
-        whitehackchar = {
-            'name': 'Lyr',
-            'class': 'Warrior',
-            'level': '1'
-        }
+        whitehackchar = fetch_whitehack_character()
         return whitehackchar
 
 class UserList(Resource):
