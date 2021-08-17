@@ -27,10 +27,10 @@ def create_character_discord():
                 discord_name VARCHAR(255) NOT NULL
             );
 
-            INSERT INTO character_discord VALUES (DEFAULT, 'Lira', '#000124', 'Mikon#2245');
-            INSERT INTO character_discord VALUES (DEFAULT, 'Kari', '#000256', 'Soma#2512');
-            INSERT INTO character_discord VALUES (DEFAULT, 'Mikasa', '#000384', 'Mikasa#2512');
-            INSERT INTO character_discord VALUES (DEFAULT, 'Rei', '#000512', 'Rei#2512');
+            INSERT INTO character_discord VALUES (DEFAULT, 'Lira', '#148270127610068993', 'Mikon#2245');
+            INSERT INTO character_discord VALUES (DEFAULT, 'Kari', '#000000000000000000', 'Soma#2512');
+            INSERT INTO character_discord VALUES (DEFAULT, 'Mikasa', '#000000000000000000', 'Mikasa#2512');
+            INSERT INTO character_discord VALUES (DEFAULT, 'Rei', '#000000000000000000', 'Rei#2512');
         """
     )
 
