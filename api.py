@@ -30,14 +30,12 @@ class WhiteHackCharacter(Resource):
             'class': 'Warrior',
             'level': '1'
         }
-
         return whitehackchar
 
 class UserList(Resource):
     def get(self):
-        users = json.dumps(fetch_character_discord())
+        users = fetch_character_discord()
         return users
-
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(UserList, '/users')

@@ -29,6 +29,8 @@ def create_character_discord():
 
             INSERT INTO character_discord VALUES (DEFAULT, 'Lira', '#000124', 'Mikon#2245');
             INSERT INTO character_discord VALUES (DEFAULT, 'Kari', '#000256', 'Soma#2512');
+            INSERT INTO character_discord VALUES (DEFAULT, 'Mikasa', '#000384', 'Mikasa#2512');
+            INSERT INTO character_discord VALUES (DEFAULT, 'Rei', '#000512', 'Rei#2512');
         """
     )
 
