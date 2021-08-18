@@ -73,6 +73,7 @@ def create_whitehack_character():
             );
 
             INSERT INTO whitehack_character VALUES (DEFAULT, 1, 'Terra', 'Strong', 'Black Librarians', NULL, NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
+            INSERT INTO whitehack_character VALUES (DEFAULT, 2, 'Aria', 'Deft', 'Elf', 'Archer', NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
         """
     )
 
@@ -196,6 +197,22 @@ def fetch_character_discord():
 
     return users
 
+def fetch_character_discord_by_id(user_id):
+    conn = psycopg2.connect(DB_HOST, sslmode='require',
+                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM character_discord WHERE user_id = %s;", (user_id,))
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    if len(rows) == 0:
+        return None
+    else:
+        characters = {}
+        for i in rows:
+            characters[i[0]] = {'name' : i[1], 'discord_id' : i[2], 'discord_name' : i[3]}
+        return characters
+
 def fetch_whitehack_character():
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
@@ -212,8 +229,32 @@ def fetch_whitehack_character():
                                      'con_group': i[16], 'int_group': i[17], 'wis_group': i[18], 'ST': i[19], 'HP': i[20], 'AC': i[21], 'MV': i[22], 'AV': i[23]}
     return whitehack_character
 
+def fetch_whitehack_character_by_id(id):
+    conn = psycopg2.connect(DB_HOST, sslmode='require',
+                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM whitehack_character WHERE char_id = %s;", (id,))
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    whitehack_character = {}
+    if len(rows) == 0:
+        return None
+    else:
+        for i in rows:
+            whitehack_character[i[0]] = {'char_id': i[0], 'user_id': i[1], 'name': i[2], 'archetype': i[3], 'group1': i[4], 'group2': i[5],
+                                        'group3': i[6], 'group4': i[7], 'group5': i[8], 'stat_str': i[9], 'stat_dex': i[10], 'stat_con': i[11], 'stat_int': i[12], 'stat_wis': i[13], 'str_group': i[14], 'dex_group': i[15],
+                                        'con_group': i[16], 'int_group': i[17], 'wis_group': i[18], 'ST': i[19], 'HP': i[20], 'AC': i[21], 'MV': i[22], 'AV': i[23]}
+        return whitehack_character
+            
+def add_whitehack_character(args):
+    conn = psycopg2.connect(DB_HOST, sslmode='require',
+                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
+    return
+
 if __name__ == '__main__':
     #create_character_discord()
-    create_whitehack_character()
+    #create_whitehack_character()
     #fetch_character_discord()
-    print(fetch_whitehack_character())
+    #print(fetch_whitehack_character())
+    pass
