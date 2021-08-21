@@ -1,5 +1,6 @@
 import psycopg2
 import os
+from psycopg2 import sql
 
 ON_HEROKU = 'ON_HEROKU' in os.environ
 
@@ -201,7 +202,7 @@ def fetch_character_discord_by_id(user_id):
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM character_discord WHERE user_id = %s;", (user_id,))
+    cur.execute("SELECT * FROM character_discord WHERE user_id = %s;", (str(user_id),))
     rows = cur.fetchall()
     cur.close()
     conn.close()
@@ -228,6 +229,33 @@ def fetch_whitehack_character():
                                      'group3': i[6], 'group4': i[7], 'group5': i[8], 'stat_str': i[9], 'stat_dex': i[10], 'stat_con': i[11], 'stat_int': i[12], 'stat_wis': i[13], 'str_group': i[14], 'dex_group': i[15],
                                      'con_group': i[16], 'int_group': i[17], 'wis_group': i[18], 'ST': i[19], 'HP': i[20], 'AC': i[21], 'MV': i[22], 'AV': i[23]}
     return whitehack_character
+
+def update_whitehack_character(char_id, update_data):
+    conn = psycopg2.connect(DB_HOST, sslmode='require',
+                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM whitehack_character WHERE char_id = %s;", (str(char_id),))
+    rows = cur.fetchall()
+    
+    if len(rows) == 0:
+        return "No character found"
+    else:
+        for k, v in update_data.items():
+            if k == 'char_id':
+                pass
+            if v == None:
+                pass
+            else:
+                cur.execute(
+                    sql.SQL("UPDATE whitehack_character SET {} = %s WHERE char_id = %s;").format(sql.Identifier(k)), (v, str(char_id))
+                )
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return "Character updated"
+    
+   
 
 def fetch_whitehack_character_by_id(id):
     conn = psycopg2.connect(DB_HOST, sslmode='require',

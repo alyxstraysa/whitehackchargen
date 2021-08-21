@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, validate, ValidationError
 
 class AddWhitehackCharacterSchema(Schema):
-    user_id = fields.String(required=True, validate=validate.Equal('DEFAULT'))
+    user_id = fields.Integer(required=True, validate=validate.Equal('DEFAULT'))
     char_id = fields.Integer(required= True)
     name = fields.String(required=True)
     archetype = fields.String()
@@ -25,3 +25,29 @@ class AddWhitehackCharacterSchema(Schema):
     AC = fields.Integer()
     MV = fields.Integer()
     AV = fields.Integer()
+
+class UpdateWhitehackCharacterSchema(Schema):
+    user_id = fields.Integer(missing=None)
+    char_id = fields.Integer(required= True)
+    name = fields.String(required=True)
+    archetype = fields.String(missing=None)
+    group1 = fields.String(missing=None)
+    group2 = fields.String(missing=None)
+    group3 = fields.String(missing=None)
+    group4 = fields.String(missing=None)
+    group5 = fields.String(missing=None)
+    stat_str = fields.Integer(missing=None)
+    stat_dex = fields.Integer(missing=None)
+    stat_con = fields.Integer(missing=None)
+    stat_int = fields.Integer(missing=None)
+    stat_wis = fields.Integer(missing=None)
+    str_group = fields.String(missing=None)
+    dex_group = fields.String(missing=None)
+    con_group = fields.String(missing=None)
+    int_group = fields.String(missing=None)
+    wis_group = fields.String(missing=None)
+    ST = fields.Integer(missing=None)
+    HP = fields.Integer(missing=None)
+    AC = fields.Integer(missing=None)
+    MV = fields.Integer(missing=None)
+    AV = fields.Integer(missing=None)
