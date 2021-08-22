@@ -68,7 +68,7 @@ class UserList(Resource):
         if register_new_user(user_data) == True:
             return {'message': 'User created successfully'}
         else:
-            return {'error': 'User already exists'}
+            return {'message': 'User already exists'}
 
 api.add_resource(UserList, '/users', endpoint='users')
 api.add_resource(WhiteHackAllCharacter, '/character/', endpoint='allcharacter')
