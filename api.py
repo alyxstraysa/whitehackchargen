@@ -65,7 +65,10 @@ class UserList(Resource):
         user_data = request.json
         user_data = AddUserSchema().load(user_data)
         print(user_data)
-        register_new_user(user_data)
+        if register_new_user(user_data) == True:
+            return {'message': 'User created successfully'}
+        else:
+            return {'error': 'User already exists'}
 
 api.add_resource(UserList, '/users', endpoint='users')
 api.add_resource(WhiteHackAllCharacter, '/character/', endpoint='allcharacter')

@@ -187,7 +187,7 @@ def register_new_user(user_data):
     rows = cur.fetchall()
     
     if len(rows) > 0 and rows[0][0] is not None:
-        return "User already registered!"
+        return False
     else:
         cur.execute(
             """
@@ -196,7 +196,7 @@ def register_new_user(user_data):
         )
         conn.commit()
         conn.close()
-        return "User registered!"
+        return True
 
 def fetch_character_discord():
     conn = psycopg2.connect(DB_HOST, sslmode='require',
