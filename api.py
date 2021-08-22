@@ -4,7 +4,7 @@ from flask_restful import Resource, Api
 import os
 import psycopg2
 from databasemanager import *
-from models import AddWhitehackCharacterSchema, UpdateWhitehackCharacterSchema
+from models import *
 
 app = Flask(__name__)
 api = Api(app)
@@ -53,13 +53,19 @@ class WhiteHackCharacterID(Resource):
         character_data = UpdateWhitehackCharacterSchema().load(character_data)
         #pass data to validation
         #updatechardatabase(character_data)
-        update_whitehack_character(character_data['char_id'], character_data)
+        update_whitehack_character(char_id, character_data)
 
 
 class UserList(Resource):
     def get(self):
         users = fetch_character_discord()
         return users
+
+    def post(self):
+        user_data = request.json
+        user_data = AddUserSchema().load(user_data)
+        print(user_data)
+        register_new_user(user_data)
 
 api.add_resource(UserList, '/users', endpoint='users')
 api.add_resource(WhiteHackAllCharacter, '/character/', endpoint='allcharacter')

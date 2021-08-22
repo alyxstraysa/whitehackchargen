@@ -12,8 +12,7 @@ if ON_HEROKU:
 else:
     from secrets import *
 
-def create_character_discord():
-    
+def create_character_discord():  
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
     cursor = conn.cursor()
@@ -23,15 +22,12 @@ def create_character_discord():
 
             CREATE TABLE character_discord (
                 user_id SERIAL PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
                 discord_id VARCHAR(255) NOT NULL,
                 discord_name VARCHAR(255) NOT NULL
             );
 
-            INSERT INTO character_discord VALUES (DEFAULT, 'Lira', '#148270127610068993', 'Mikon#2245');
-            INSERT INTO character_discord VALUES (DEFAULT, 'Kari', '#000000000000000000', 'Soma#2512');
-            INSERT INTO character_discord VALUES (DEFAULT, 'Mikasa', '#000000000000000000', 'Mikasa#2512');
-            INSERT INTO character_discord VALUES (DEFAULT, 'Rei', '#000000000000000000', 'Rei#2512');
+            --INSERT INTO character_discord VALUES (DEFAULT, '#148270127610068993', 'Mikon#2245');
+            --INSERT INTO character_discord VALUES (DEFAULT, '#000000000000000000', 'Soma#2512');
         """
     )
 
@@ -73,8 +69,8 @@ def create_whitehack_character():
                 AV INTEGER NOT NULL
             );
 
-            INSERT INTO whitehack_character VALUES (DEFAULT, 1, 'Terra', 'Strong', 'Black Librarians', NULL, NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
-            INSERT INTO whitehack_character VALUES (DEFAULT, 2, 'Aria', 'Deft', 'Elf', 'Archer', NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
+            --INSERT INTO whitehack_character VALUES (DEFAULT, 1, 'Terra', 'Strong', 'Black Librarians', NULL, NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
+            --INSERT INTO whitehack_character VALUES (DEFAULT, 2, 'Aria', 'Deft', 'Elf', 'Archer', NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
         """
     )
 
@@ -183,6 +179,25 @@ def create_jobs_table():
     conn.commit()
     conn.close()
 
+def register_new_user(user_data):
+    conn = psycopg2.connect(DB_HOST, sslmode='require',
+                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM character_discord WHERE discord_id = %s;", (str(user_data['discord_id']),))
+    rows = cur.fetchall()
+    
+    if len(rows) > 0 and rows[0][0] is not None:
+        return "User already registered!"
+    else:
+        cur.execute(
+            """
+                INSERT into character_discord (user_id, discord_id, discord_name) VALUES (DEFAULT, %s, %s);
+            """, (str(user_data['discord_id']), str(user_data['discord_name']))
+        )
+        conn.commit()
+        conn.close()
+        return "User registered!"
+
 def fetch_character_discord():
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
@@ -194,7 +209,7 @@ def fetch_character_discord():
 
     users = {}
     for i in rows:
-        users[i[0]] = {'name' : i[1], 'discord_id' : i[2], 'discord_name' : i[3]}
+        users[i[0]] = {'user_id' : i[0], 'discord_id' : i[1], 'discord_name' : i[2]}
 
     return users
 
@@ -211,14 +226,14 @@ def fetch_character_discord_by_id(user_id):
     else:
         characters = {}
         for i in rows:
-            characters[i[0]] = {'name' : i[1], 'discord_id' : i[2], 'discord_name' : i[3]}
+            characters[i[0]] = {'user_id' : i[0], 'discord_id' : i[1], 'discord_name' : i[2]}
         return characters
 
 def fetch_whitehack_character():
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM whitehack_character;")
+    cur.execute("SELECT * FROM whitehack_character ORDER BY char_id;")
     rows = cur.fetchall()
     cur.close()
     conn.close()
@@ -281,8 +296,8 @@ def add_whitehack_character(args):
     return
 
 if __name__ == '__main__':
-    #create_character_discord()
-    #create_whitehack_character()
-    #fetch_character_discord()
-    #print(fetch_whitehack_character())
+    create_character_discord()
+    create_whitehack_character()
+    fetch_character_discord()
+    #register_new_user({'discord_id': '12345', 'discord_name':'Dog#2456'})
     pass
