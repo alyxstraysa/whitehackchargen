@@ -69,8 +69,8 @@ def create_whitehack_character():
                 AV INTEGER NOT NULL
             );
 
-            --INSERT INTO whitehack_character VALUES (DEFAULT, 1, 'Terra', 'Strong', 'Black Librarians', NULL, NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
-            --INSERT INTO whitehack_character VALUES (DEFAULT, 2, 'Aria', 'Deft', 'Elf', 'Archer', NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
+            INSERT INTO whitehack_character VALUES (DEFAULT, 1, 'Terra', 'Strong', 'Black Librarians', NULL, NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
+            INSERT INTO whitehack_character VALUES (DEFAULT, 2, 'Aria', 'Deft', 'Elf', 'Archer', NULL, NULL, NULL, 6, 15, 14, 9, 13, NULL, NULL, NULL, NULL, NULL, 6, 6, 1, 30, 30);
         """
     )
 
@@ -194,8 +194,8 @@ def add_whitehack_character(args):
     return
 
 if __name__ == '__main__':
-    create_character_discord()
-    create_whitehack_character()
-    fetch_character_discord()
+    #create_character_discord()
+    #create_whitehack_character()
+    #fetch_character_discord()
     #register_new_user({'discord_id': '12345', 'discord_name':'Dog#2456'})
     pass

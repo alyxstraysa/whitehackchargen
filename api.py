@@ -6,6 +6,7 @@ import psycopg2
 from databasemanager import *
 from models import *
 from randomchargen import *
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -23,7 +24,7 @@ else:
 #routing
 @app.route('/')
 def home():
-    return render_template('index.html', name='Victor')
+    return render_template('index.html')
 
 #api
 class WhiteHackAllCharacter(Resource):
@@ -73,9 +74,20 @@ class UserList(Resource):
 
 class GenerateRandomCharacter(Resource):
     def get(self):
-        character = generate_random_character()
-        return character
-        
+        params = {
+        "discord_id": str(request.args.get("discord_id")),
+        "race": json.loads(request.args.get("race").lower())
+        }
+
+        try:
+            params = GenCharSchema().load(params)
+            print(params['race'])
+            character = generate_random_character(params['discord_id'],params['race'])
+
+            return character
+        except:
+            return {'error': 'Incorrect parameters passed'}, 404
+
     # def post(self):
     #     user_data = request.json
     #     user_data = RandomCharacterSchema().load(user_data)

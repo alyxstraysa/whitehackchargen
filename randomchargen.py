@@ -83,21 +83,31 @@ def select_random_occupation():
     """
 
     occupation = random.choice(occupations.split(','))
-    group_index = random.choice(['str_group', 'dex_group', 'con_group', 'int_group', 'wis_group'])
 
-    return occupation.strip(), group_index
+    return occupation.strip()
 
 def select_random_race():
     races = [
         'High Elf',
-        'Drow'
+        'Drow',
         'Dwarf',
-        'Tiefling'
+        'Tiefling',
         'Kobold',
         'Gargoyle'
     ]
 
     return random.choice(races)
+
+def select_random_group(char_dict):
+    group_list = ['str_group', 'dex_group', 'con_group', 'int_group', 'wis_group']
+    group_select = random.choice(group_list)
+
+    if char_dict[group_select] == None:
+        return group_select
+    else:
+        group_list.remove(group_select)
+        return select_random_group(char_dict)
+
 
 def roll_stats():
     stat_list = []
@@ -108,9 +118,10 @@ def roll_stats():
 
     return sum(stat_list)
 
-def generate_random_character(race=False):
+def generate_random_character(user_id, race=False):
     archetype = random.choice(['Strong', 'Deft', 'Wise'])
     char_dict = {
+        'user_id': user_id,
         'archetype': archetype,
         'group1': None,
         'group2': None,
@@ -122,6 +133,11 @@ def generate_random_character(race=False):
         'stat_con': roll_stats(),
         'stat_int': roll_stats(),
         'stat_wis': roll_stats(),
+        'str_group': None,
+        'dex_group': None,
+        'con_group': None,
+        'int_group': None,
+        'wis_group': None,
         'ST': None,
         'HP': None,
         'AC': None,
@@ -145,11 +161,22 @@ def generate_random_character(race=False):
         char_dict['MV'] = 30
         char_dict['AV'] = 10
 
-    occupation, group_idx = select_random_occupation()
-    char_dict['group1'] = occupation
-    char_dict[group_idx] = occupation
+    occupation = select_random_occupation()
+
+    if race==True:
+        char_dict['group1'] = select_random_race()
+        random_group = select_random_group(char_dict)
+        char_dict[random_group] = char_dict['group1']
+
+        char_dict['group2'] = occupation
+        random_group = select_random_group(char_dict)
+        char_dict[random_group] = char_dict['group2']
+    else:
+        char_dict['group1'] = occupation
+        random_group = select_random_group(char_dict)
+        char_dict[random_group] = char_dict['group1']
 
     return char_dict
 
 if __name__ == '__main__':
-    print(generate_random_character())
+    print(generate_random_character('Test123', False))

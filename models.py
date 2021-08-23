@@ -1,12 +1,16 @@
 from marshmallow import Schema, fields, validate, ValidationError
 
+class GenCharSchema(Schema):
+    discord_id = fields.String(required=True, validate=validate.Length(equal=18))
+    race = fields.Bool(required=True)
+
 class AddUserSchema(Schema):
     discord_id  = fields.String(required=True)
     discord_name = fields.String(required=True)
 
 class RandomCharacterSchema(Schema):
     discord_id = fields.String(required=True)
-    
+
 class AddWhitehackCharacterSchema(Schema):
     user_id = fields.Integer(required=True, validate=validate.Equal('DEFAULT'))
     char_id = fields.Integer(required= True)
