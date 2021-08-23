@@ -50,7 +50,7 @@ def select_random_occupation():
     Miner,Minister,Minstrel,
     Monk,Mortician,Mourner,
     Musician,Necromancer,Noble,
-    Nun,Nurse,Old-clothes seller,
+    Nun,Nurse, Clothing Seller,
     Page,Painter,Pariah, Peasant,Perfumer,
     Philosopher,Physician,Pigkeeper,
     Pilgrim,Pirate,Plasterer,
@@ -85,7 +85,7 @@ def select_random_occupation():
     occupation = random.choice(occupations.split(','))
     group_index = random.choice(['str_group', 'dex_group', 'con_group', 'int_group', 'wis_group'])
 
-    return occupation, group_index
+    return occupation.strip(), group_index
 
 def select_random_race():
     races = [

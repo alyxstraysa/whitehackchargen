@@ -5,6 +5,7 @@ import os
 import psycopg2
 from databasemanager import *
 from models import *
+from randomchargen import *
 
 app = Flask(__name__)
 api = Api(app)
@@ -70,9 +71,19 @@ class UserList(Resource):
         else:
             return {'message': 'User already exists'}
 
+class GenerateRandomCharacter(Resource):
+    def get(self):
+        character = generate_random_character()
+        return character
+        
+    # def post(self):
+    #     user_data = request.json
+    #     user_data = RandomCharacterSchema().load(user_data)
+
 api.add_resource(UserList, '/users', endpoint='users')
 api.add_resource(WhiteHackAllCharacter, '/character/', endpoint='allcharacter')
 api.add_resource(WhiteHackCharacterID, '/character/<int:char_id>', endpoint='character')
+api.add_resource(GenerateRandomCharacter, '/generate/', endpoint='generate')
 
 if __name__ == '__main__':
     app.run(debug=True)
