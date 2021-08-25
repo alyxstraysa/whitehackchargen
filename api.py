@@ -39,6 +39,10 @@ class WhiteHackAllCharacter(Resource):
         print(character_data)
         #insertchardatabase(character_data)
 
+class GetUserID(Resource):
+    def get(self, discord_id):
+        user_id = fetch_user_id(discord_id)
+        return {'user_id': user_id}
 
 class WhiteHackCharacterID(Resource):
     #fetch character by id
@@ -88,11 +92,8 @@ class GenerateRandomCharacter(Resource):
         except:
             return {'error': 'Incorrect parameters passed'}, 404
 
-    # def post(self):
-    #     user_data = request.json
-    #     user_data = RandomCharacterSchema().load(user_data)
-
 api.add_resource(UserList, '/users', endpoint='users')
+api.add_resource(GetUserID, '/users/<int:discord_id>', endpoint="userid")
 api.add_resource(WhiteHackAllCharacter, '/character/', endpoint='allcharacter')
 api.add_resource(WhiteHackCharacterID, '/character/<int:char_id>', endpoint='character')
 api.add_resource(GenerateRandomCharacter, '/generate/', endpoint='generate')

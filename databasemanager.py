@@ -96,6 +96,19 @@ def register_new_user(user_data):
         conn.close()
         return True
 
+def fetch_user_id(discord_id):
+    conn = psycopg2.connect(DB_HOST, sslmode='require',
+                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
+    cur = conn.cursor()
+    cur.execute("SELECT user_id FROM character_discord where discord_id = %s;", (str(discord_id),))
+    rows = cur.fetchall()
+    conn.close()
+    if len(rows) > 0:
+        return rows[0][0]
+    else:
+        return None
+
+
 def fetch_character_discord():
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
@@ -168,8 +181,6 @@ def update_whitehack_character(char_id, update_data):
         
         return "Character updated"
     
-   
-
 def fetch_whitehack_character_by_id(id):
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
