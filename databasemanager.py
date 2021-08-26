@@ -83,7 +83,7 @@ def create_whitehack_character():
 def add_new_character(char_dict):
     conn, cursor = connect_to_db()
     cursor.execute("""
-        INSERT INTO whitehack_character VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        INSERT INTO whitehack_character VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
     """, (char_dict['user_id'], char_dict['name'], char_dict['archetype'], char_dict['group1'], char_dict['group2'], char_dict['group3'], char_dict['group4'], char_dict['group5'], char_dict['stat_str'], char_dict['stat_dex'], char_dict['stat_con'], char_dict['stat_int'], char_dict['stat_wis'], char_dict['str_group'], char_dict['dex_group'], char_dict['con_group'], char_dict['int_group'], char_dict['wis_group'], char_dict['ST'], char_dict['HP'], char_dict['AC'], char_dict['MV'], char_dict['AV']))
 
     conn.commit()
