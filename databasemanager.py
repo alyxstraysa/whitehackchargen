@@ -67,7 +67,7 @@ def create_whitehack_character():
                 wis_group VARCHAR(255),
                 ST INTEGER NOT NULL,
                 HP INTEGER NOT NULL,
-                AC INTEGER NOT NULL,
+                AC INTEGER NULL,
                 MV INTEGER NOT NULL,
                 AV INTEGER NOT NULL
             );
