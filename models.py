@@ -33,7 +33,7 @@ class AddWhitehackCharacterSchema(Schema):
     wis_group = fields.String(missing=None)
     ST = fields.Integer()
     HP = fields.Integer()
-    AC = fields.Integer()
+    AC = fields.Integer(missing=None)
     MV = fields.Integer()
     AV = fields.Integer()
 
