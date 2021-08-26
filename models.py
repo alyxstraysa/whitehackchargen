@@ -12,8 +12,8 @@ class RandomCharacterSchema(Schema):
     discord_id = fields.String(required=True)
 
 class AddWhitehackCharacterSchema(Schema):
-    user_id = fields.Integer(required=True, validate=validate.Length(equal=18))
-    char_id = fields.Integer(required= True, validate=validate.Equal('DEFAULT'))
+    user_id = fields.Integer(required=True)
+    char_id = fields.String(required= True, validate=validate.Equal('DEFAULT'))
     name = fields.String(required=True)
     archetype = fields.String()
     group1 = fields.String()
