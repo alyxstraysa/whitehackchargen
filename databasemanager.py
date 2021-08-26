@@ -84,8 +84,9 @@ def add_new_character(char_dict):
     conn, cursor = connect_to_db()
     cursor.execute("""
         INSERT INTO whitehack_character VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-    """, (char_dict['user_id'], char_dict['name'], char_dict['archetype'], char_dict['group1'], char_dict['group2'], char_dict['group3'], char_dict['group4'], char_dict['group5'], char_dict['stat_str'], char_dict['stat_dex'], char_dict['stat_con'], char_dict['stat_int'], char_dict['stat_wis'], char_dict['str_group'], char_dict['dex_group'], char_dict['con_group'], char_dict['int_group'], char_dict['wis_group'], char_dict['ST'], char_dict['HP'], char_dict['AC'], char_dict['MV'], char_dict['AV']))
-    
+    """, (str(char_dict['user_id')], str(char_dict['name']), str(char_dict['archetype']), str(char_dict['group1']), str(char_dict['group2']), str(char_dict['group3']), str(char_dict['group4']), str(char_dict['group5']), str(char_dict['stat_str']), str(char_dict['stat_dex']), str(char_dict['stat_con']), str(char_dict['stat_int']), str(char_dict['stat_wis']), str(char_dict['str_group']), str(char_dict['dex_group']), str(char_dict['con_group']), str(char_dict['int_group']), str(char_dict['wis_group']), str(char_dict['ST']), str(char_dict['HP']), str(char_dict['AC']), str(char_dict['MV']), str(char_dict['AV'])))
+    conn.commit()
+    conn.close()    
     conn.commit()
     conn.close()
     return "Character added"
