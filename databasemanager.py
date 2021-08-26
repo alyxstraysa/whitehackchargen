@@ -81,10 +81,20 @@ def create_whitehack_character():
     conn.close()
 
 def add_new_character(char_dict):
+    def cast_to_str(value):
+        if value is None:
+            return None
+        else:
+            return str(value)
+
     conn, cursor = connect_to_db()
     cursor.execute("""
         INSERT INTO whitehack_character VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
-    """, (str(char_dict['user_id']), str(char_dict['name']), str(char_dict['archetype']), str(char_dict['group1']), str(char_dict['group2']), str(char_dict['group3']), str(char_dict['group4']), str(char_dict['group5']), str(char_dict['stat_str']), str(char_dict['stat_dex']), str(char_dict['stat_con']), str(char_dict['stat_int']), str(char_dict['stat_wis']), str(char_dict['str_group']), str(char_dict['dex_group']), str(char_dict['con_group']), str(char_dict['int_group']), str(char_dict['wis_group']), str(char_dict['ST']), str(char_dict['HP']), str(char_dict['AC']), str(char_dict['MV']), str(char_dict['AV'])))
+    """, (cast_to_str(char_dict['user_id']), cast_to_str(char_dict['name']), cast_to_str(char_dict['archetype']), cast_to_str(char_dict['group1']), cast_to_str(char_dict['group2']), cast_to_str(char_dict['group3']), cast_to_str(char_dict['group4']), cast_to_str(char_dict['group5']), cast_to_str(char_dict['stat_str']), cast_to_str(char_dict['stat_dex']), cast_to_str(char_dict['stat_con']), cast_to_str(char_dict['stat_int']), cast_to_str(char_dict['stat_wis']), cast_to_str(char_dict['str_group']), cast_to_str(char_dict['dex_group']), cast_to_str(char_dict['con_group']), cast_to_str(char_dict['int_group']), cast_to_str(char_dict['wis_group']), cast_to_str(char_dict['ST']), cast_to_str(char_dict['HP']), cast_to_str(char_dict['AC']), cast_to_str(char_dict['MV']), cast_to_str(char_dict['AV']))
+    )
+
+    conn.commit()
+    conn.close()
 
     conn.commit()
     conn.close()
