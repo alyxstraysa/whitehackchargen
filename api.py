@@ -36,8 +36,8 @@ class WhiteHackAllCharacter(Resource):
         character_data = request.json
         character_data = AddWhitehackCharacterSchema().load(character_data)
         #pass data to validation
-        print(character_data)
-        #insertchardatabase(character_data)
+        add_new_character(character_data)
+        return {'message': 'Character added'}
 
 class GetUserID(Resource):
     def get(self, discord_id):

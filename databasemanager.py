@@ -12,10 +12,15 @@ if ON_HEROKU:
 else:
     from secrets import *
 
-def create_character_discord():  
+def connect_to_db():
     conn = psycopg2.connect(DB_HOST, sslmode='require',
                             database=DB, user=DB_USERNAME, password=DB_PASSWORD)
     cursor = conn.cursor()
+    return conn, cursor    
+
+
+def create_character_discord():  
+    conn, cursor = connect_to_db()
     cursor.execute(
         """
             DROP TABLE IF EXISTS character_discord;
@@ -35,9 +40,7 @@ def create_character_discord():
     conn.close()
 
 def create_whitehack_character():
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cursor = conn.cursor()
+    conn, cursor = connect_to_db()
     cursor.execute(
         """
             DROP TABLE IF EXISTS whitehack_character;
@@ -77,17 +80,26 @@ def create_whitehack_character():
     conn.commit()
     conn.close()
 
+def add_new_character(char_dict):
+    conn, cursor = connect_to_db()
+    cursor.execute("""
+        INSERT INTO whitehack_character VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+    """, (char_dict['user_id'], char_dict['name'], char_dict['archetype'], char_dict['group1'], char_dict['group2'], char_dict['group3'], char_dict['group4'], char_dict['group5'], char_dict['stat_str'], char_dict['stat_dex'], char_dict['stat_con'], char_dict['stat_int'], char_dict['stat_wis'], char_dict['str_group'], char_dict['dex_group'], char_dict['con_group'], char_dict['int_group'], char_dict['wis_group'], char_dict['ST'], char_dict['HP'], char_dict['AC'], char_dict['MV'], char_dict['AV']))
+    
+    conn.commit()
+    conn.close()
+    return "Character added"
+    
+
 def register_new_user(user_data):
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM character_discord WHERE discord_id = %s;", (str(user_data['discord_id']),))
-    rows = cur.fetchall()
+    conn, cursor = connect_to_db()
+    cursor.execute("SELECT * FROM character_discord WHERE discord_id = %s;", (str(user_data['discord_id']),))
+    rows = cursor.fetchall()
     
     if len(rows) > 0 and rows[0][0] is not None:
         return False
     else:
-        cur.execute(
+        cursor.execute(
             """
                 INSERT into character_discord (user_id, discord_id, discord_name) VALUES (DEFAULT, %s, %s);
             """, (str(user_data['discord_id']), str(user_data['discord_name']))
@@ -97,11 +109,9 @@ def register_new_user(user_data):
         return True
 
 def fetch_user_id(discord_id):
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT user_id FROM character_discord where discord_id = %s;", (str(discord_id),))
-    rows = cur.fetchall()
+    conn, cursor = connect_to_db()
+    cursor.execute("SELECT user_id FROM character_discord where discord_id = %s;", (str(discord_id),))
+    rows = cursor.fetchall()
     conn.close()
     if len(rows) > 0:
         return rows[0][0]
@@ -110,12 +120,10 @@ def fetch_user_id(discord_id):
 
 
 def fetch_character_discord():
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM character_discord;")
-    rows = cur.fetchall()
-    cur.close()
+    conn, cursor = connect_to_db()
+    cursor.execute("SELECT * FROM character_discord;")
+    rows = cursor.fetchall()
+    cursor.close()
     conn.close()
 
     users = {}
@@ -125,12 +133,10 @@ def fetch_character_discord():
     return users
 
 def fetch_character_discord_by_id(user_id):
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM character_discord WHERE user_id = %s;", (str(user_id),))
-    rows = cur.fetchall()
-    cur.close()
+    conn, cursor = connect_to_db()
+    cursor.execute("SELECT * FROM character_discord WHERE user_id = %s;", (str(user_id),))
+    rows = cursor.fetchall()
+    cursor.close()
     conn.close()
     if len(rows) == 0:
         return None
@@ -141,12 +147,10 @@ def fetch_character_discord_by_id(user_id):
         return characters
 
 def fetch_whitehack_character():
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM whitehack_character ORDER BY char_id;")
-    rows = cur.fetchall()
-    cur.close()
+    conn, cursor = connect_to_db()
+    cursor.execute("SELECT * FROM whitehack_character ORDER BY char_id;")
+    rows = cursor.fetchall()
+    cursor.close()
     conn.close()
 
     whitehack_character = {}
@@ -157,11 +161,9 @@ def fetch_whitehack_character():
     return whitehack_character
 
 def update_whitehack_character(char_id, update_data):
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM whitehack_character WHERE char_id = %s;", (str(char_id),))
-    rows = cur.fetchall()
+    conn, cursor = connect_to_db()
+    cursor.execute("SELECT * FROM whitehack_character WHERE char_id = %s;", (str(char_id),))
+    rows = cursor.fetchall()
     
     if len(rows) == 0:
         return "No character found"
@@ -172,22 +174,20 @@ def update_whitehack_character(char_id, update_data):
             if v == None:
                 pass
             else:
-                cur.execute(
+                cursor.execute(
                     sql.SQL("UPDATE whitehack_character SET {} = %s WHERE char_id = %s;").format(sql.Identifier(k)), (v, str(char_id))
                 )
         conn.commit()
-        cur.close()
+        cursor.close()
         conn.close()
         
         return "Character updated"
     
 def fetch_whitehack_character_by_id(id):
-    conn = psycopg2.connect(DB_HOST, sslmode='require',
-                            database=DB, user=DB_USERNAME, password=DB_PASSWORD)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM whitehack_character WHERE char_id = %s;", (id,))
-    rows = cur.fetchall()
-    cur.close()
+    conn, cursor = connect_to_db()
+    cursor.execute("SELECT * FROM whitehack_character WHERE char_id = %s;", (id,))
+    rows = cursor.fetchall()
+    cursor.close()
     conn.close()
     whitehack_character = {}
     if len(rows) == 0:
