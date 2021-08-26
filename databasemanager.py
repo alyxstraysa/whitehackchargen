@@ -86,6 +86,11 @@ def add_new_character(char_dict):
             return None
         else:
             return str(value)
+    
+    for key, value in char_dict.items():
+        print(key)
+        print(value)
+        print(cast_to_str(value))
 
     conn, cursor = connect_to_db()
     cursor.execute("""
